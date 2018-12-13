@@ -7,16 +7,19 @@ var Spotify = require("node-spotify-api");
 var request = require("request");
 var keys = require("./key.js");
 var liriArgument = process.argv[2]
+var argument3 = process.argv[3];
 
 //=======================================================================================================
 
 //possible command lines 
+//sends the liriargument hich is process.argv[2]
 switch (liriArgument) {
-    case "concert-this": concertThis();
+    //sending argument 3 which is process.argv[3] to all functions
+    case "concert-this": concertThis(argument3);
         break;
-    case "spotify-this-song": spotifyThisSong();
+    case "spotify-this-song": spotifyThisSong(argument3);
         break;
-    case "movie-this": movieThis();
+    case "movie-this": movieThis(argument3);
         break;
     case "do-what-it-says": doWhatItSays();
         break;
@@ -61,8 +64,8 @@ function movieThis() {
 
 
 //function for spotify
-function spotifyThisSong() {
-    var song = process.argv[3];
+function spotifyThisSong(a) {
+    var song = a;
     //api key
     var spotify = new Spotify({
         id: "cfcb4580abf747caa1e336a08a07e692",
@@ -90,6 +93,12 @@ function doWhatItSays() {
     fs.readFile("./random.txt", "utf8", function(error, data) {
         if (!error) {
             var dataResults = data.split(",");
+            console.log(dataResults[0]);
+            console.log(dataResults[1]);
+            liriArgument = dataResults[0];
+            argument3 = dataResults[1];
+            spotifyThisSong(argument3)
+
         } else {
             console.log("Error :" + error);
             return;
