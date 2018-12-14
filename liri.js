@@ -7,7 +7,7 @@ var moment = require('moment');
 var bandsintown = require('bandsintown')(keys.concertKey);
 var Spotify = require("node-spotify-api");
 var request = require("request");
-
+var axios = require("axios")
 var liriArgument = process.argv[2]
 var argument3 = process.argv[3];
 
@@ -30,7 +30,7 @@ switch (liriArgument) {
         "1. concert-this 'any artist' \n" +
         "2. spotify-this-song 'any song name' \n" +
         "3. movie-this 'any movie name' \n" +
-        "4. do-what-it-says. \n"
+        "4. do-what-it-says \n"
     );
 };
 
@@ -50,20 +50,18 @@ function movieThis() {
     request(omdbURL, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             var movieResults =
-                "---------------------------------------------------\n" +
+                "\n---------------------------------------------------\n" +
                 "Movie Tile: " + JSON.parse(body).Title + "\n" +
                 "IMDB Rating: " + JSON.parse(body).imdbRating + "\n" +
                 "Rotten Tomatoes: " + JSON.parse(body).Ratings[1].Value + "\n" +
                 "Country where the movie was produced: " + JSON.parse(body).Country + "\n" +
+                "Language: " + JSON.parse(body).Language + "\n" +
                 "Plot: " + JSON.parse(body).Plot + "\n" +
                 "Actors: " + JSON.parse(body).Actors + "\n" +
                 "---------------------------------------------------";
             console.log(movieResults)
             log(movieResults);
-        } else {
-            console.log("Error :" + error);
-            return;
-        };
+        } 
     });
 };
 
@@ -83,13 +81,13 @@ function spotifyThisSong(a) {
     spotify
         .search({ type: 'track', query: song })
         .then(function (response) {
-            var spotifyResults = 
-            "------------------------------------------------\n" +
-            "Song Name: " + response.tracks.items[0].name + 
-            "\nArtist(s): " + response.tracks.items[0].artists[0].name + 
-            "\nAlbum the song is from: " + response.tracks.items[0].album.name + 
-            "\nPreview link to the song: " + response.tracks.items[0].preview_url +
-            "\n-------------------------------------------------";
+            var spotifyResults =
+                "\n------------------------------------------------\n" +
+                "Song Name: " + response.tracks.items[0].name +
+                "\nArtist(s): " + response.tracks.items[0].artists[0].name +
+                "\nAlbum the song is from: " + response.tracks.items[0].album.name +
+                "\nPreview link to the song: " + response.tracks.items[0].preview_url +
+                "\n-------------------------------------------------";
             console.log(spotifyResults)
             log(spotifyResults);
         })
@@ -100,16 +98,39 @@ function spotifyThisSong(a) {
 
 //concert this
 function concertThis() {
-    var concert = process.argv[3]
+    var artist = process.argv[3]
     //show default movie
-    if (!concert) {
-        concert = "Beyonce";
+    if (!artist) {
+        artist = "John Legend";
     }
-
-    var concertURL = "https://rest.bandsintown.com/artists/" + concert + "/events?app_id=" + keys.concertKey + "&date=upcoming";
+    var concertURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=" + keys.concertKey + "&date=upcoming";
+    console.log(concertURL);
     request(concertURL, function (error, response, body) {
         if (!error && response.statusCode === 200) {
-            console.log(JSON.parse(body));
+            // var concertResults =
+            //     "---------------------------------------------------\n" +
+            //     "Movie Tile: " + JSON.parse(body).Title + "\n" +
+            //     "IMDB Rating: " + JSON.parse(body).imdbRating + "\n" +
+            //     "Rotten Tomatoes: " + JSON.parse(body).Ratings[1].Value + "\n" +
+            //     "Country where the movie was produced: " + JSON.parse(body).Country + "\n" +
+            //     "Plot: " + JSON.parse(body).Plot + "\n" +
+            //     "Actors: " + JSON.parse(body).Actors + "\n" +
+            //     "---------------------------------------------------";
+            for (var i=0; i<3; i++) {
+                var results = JSON.parse(body)[i];
+                var concertResults = 
+                "\n-------------------------------------\n" + 
+                "Artist: " + artist +
+                "\nVenue name: " + results.venue.name + 
+                "\nVenue location: \n " + 
+                    results.venue.country + "\n " +
+                    results.venue.region + "\n " +
+                    results.venue.city + "\n" +
+                "Date and Time: " + results.datetime + "\n" + 
+                "-------------------------------------\n";
+                console.log(concertResults);
+                log(concertResults);
+            };
         } else {
             console.log("Error :" + error);
             return;
@@ -132,7 +153,6 @@ function doWhatItSays() {
             console.log("Error :" + error);
             return;
         }
-
     });
 }
 

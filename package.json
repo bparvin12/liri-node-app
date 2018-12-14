@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/bparvin12/liri-node-app#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "bandsintown": "^1.0.1",
     "dotenv": "^6.2.0",
     "moment": "^2.22.2",
