@@ -11,7 +11,11 @@ var omdbAPI = {
   key: "5979aa29",
 };
 
+var concertKey = "codingbootcamp"
+
 module.exports = {
-  spotify: spotify,
+  spotifyID: spotify.id,
+  spotifySecret: spotify.secret,
   omdbAPI: omdbAPI.key,
+  concertKey: concertKey
 };
