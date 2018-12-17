@@ -7,7 +7,7 @@ var moment = require('moment');
 var bandsintown = require('bandsintown')(keys.concertKey);
 var Spotify = require("node-spotify-api");
 var request = require("request");
-var axios = require("axios")
+// var axios = require("axios")
 var liriArgument = process.argv[2]
 var argument3 = process.argv[3];
 
@@ -107,15 +107,6 @@ function concertThis() {
     console.log(concertURL);
     request(concertURL, function (error, response, body) {
         if (!error && response.statusCode === 200) {
-            // var concertResults =
-            //     "---------------------------------------------------\n" +
-            //     "Movie Tile: " + JSON.parse(body).Title + "\n" +
-            //     "IMDB Rating: " + JSON.parse(body).imdbRating + "\n" +
-            //     "Rotten Tomatoes: " + JSON.parse(body).Ratings[1].Value + "\n" +
-            //     "Country where the movie was produced: " + JSON.parse(body).Country + "\n" +
-            //     "Plot: " + JSON.parse(body).Plot + "\n" +
-            //     "Actors: " + JSON.parse(body).Actors + "\n" +
-            //     "---------------------------------------------------";
             for (var i=0; i<3; i++) {
                 var results = JSON.parse(body)[i];
                 var concertResults = 
