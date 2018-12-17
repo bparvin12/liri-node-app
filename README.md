@@ -41,7 +41,7 @@ node liri.js movie-this "Flubber"
 ```
 is put in the command line. The following info appears on on both the console and log.txt :
 
-![Image of OMDB Results](images/OMBD.png)
+![Image of OMDB Results](images/OMDB.png)
 
 ### BandsInTown
 When using the function concert-this, you can search an artist and obtain three upcoming events. For instance when 
